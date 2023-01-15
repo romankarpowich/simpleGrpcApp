@@ -10,8 +10,9 @@ import "groups/groups.proto";
 service Users {
   // Запрос на получение списка пользователей
   rpc List(ListRequest) returns (ListResponse) {};
+  // Запрос на создание пользователя
+  rpc Create(CreateRequest) returns (CreateResponse) {};
 }
-
 
 // Сущность запроса на получение списка пользователей
 message ListRequest {
@@ -58,6 +59,22 @@ message ListResponse {
   repeated User items = 1;
   // Количество пользователей (по заданному фильтру)
   uint64 total = 2;
+}
+
+// Сущность запроса на создание пользователя
+message CreateRequest {
+  // Имя пользователя
+  optional string name = 1;
+  // Идентификатор группы пользователя
+  optional string group_id = 2;
+  // Тип пользователя
+  optional UserType type = 3;
+}
+
+// Сущность ответа на создание пользователя
+message CreateResponse {
+  // Созданный пользователь
+  User user = 1;
 }
 
 // Сущность пользователя
