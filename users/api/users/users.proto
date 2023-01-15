@@ -1,0 +1,5 @@
+syntax = "proto3";
+
+package users;
+
+option go_package = "github.com/simpleGrpcApp/users/pkg/api/users;users";
