@@ -92,9 +92,9 @@ message User {
   // Дата создания пользователя
   google.protobuf.Timestamp created_at = 6;
   // Дата обновления пользователя
-  google.protobuf.Timestamp updated_at = 7;
+  optional google.protobuf.Timestamp updated_at = 7;
   // Дата удаления пользователя
-  google.protobuf.Timestamp deleted_at = 8;
+  optional google.protobuf.Timestamp deleted_at = 8;
 }
 
 // Тип пользователя

@@ -1,6 +1,7 @@
 package users
 
 import (
+	"github.com/simpleGrpcApp/users/internal/pkg/store"
 	"github.com/simpleGrpcApp/users/pkg/api/users"
 	"google.golang.org/grpc"
 )
@@ -8,6 +9,8 @@ import (
 // Implementation implement users interface
 type Implementation struct {
 	users.UnimplementedUsersServer
+
+	storage *store.Store
 }
 
 func (i *Implementation) Register(server *grpc.Server) {
@@ -15,6 +18,6 @@ func (i *Implementation) Register(server *grpc.Server) {
 }
 
 // NewUsers return new Implementation instance
-func NewUsers() *Implementation {
-	return &Implementation{}
+func NewUsers(storage *store.Store) *Implementation {
+	return &Implementation{storage: storage}
 }

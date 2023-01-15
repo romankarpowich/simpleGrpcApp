@@ -64,7 +64,7 @@ message Group {
   // Дата создания группы
   google.protobuf.Timestamp created_at = 3;
   // Дата обновления группы
-  google.protobuf.Timestamp updated_at = 4;
+  optional google.protobuf.Timestamp updated_at = 4;
   // Дата удаления группы
-  google.protobuf.Timestamp deleted_at = 5;
+  optional google.protobuf.Timestamp deleted_at = 5;
 }
