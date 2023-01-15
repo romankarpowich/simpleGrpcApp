@@ -1,0 +1,108 @@
+syntax = "proto3";
+
+package users;
+
+option go_package = "github.com/romankarpowich/simpleGrpcApp/users/pkg/api/users;users";
+
+import "google/protobuf/timestamp.proto";
+import "groups/groups.proto";
+
+service Users {
+  // Запрос на получение списка пользователей
+  rpc List(ListRequest) returns (ListResponse) {};
+  // Запрос на создание пользователя
+  rpc Create(CreateRequest) returns (CreateResponse) {};
+}
+
+// Сущность запроса на получение списка пользователей
+message ListRequest {
+  // Сущность фильтра к запросу
+  message Filter {
+    // Список идентификаторов пользователей
+    repeated string id_in = 1;
+    // Список идентификаторов групп
+    repeated string group_in = 2;
+    // Список типов пользователей
+    repeated UserType user_type_in = 3;
+    // Сходство по имени
+    optional string name_like = 4;
+  }
+  // Поле для сортировки
+  enum OrderField {
+    // Создание пользователя
+    CREATED_AT = 0;
+    // Обновление пользователя
+    UPDATED_AT = 1;
+  }
+  // Направление сортировки
+  enum OrderDirection {
+    // По возрастанию
+    ASC = 0;
+    // По убыванию
+    DESC = 1;
+  }
+  // Фильтр запроса
+  Filter filter = 1;
+  // Лимит записей
+  uint64 limit = 2;
+  // Сдвиг записей
+  uint64 offset = 3;
+  // Поле для сортировки
+  OrderField order_filed = 4;
+  // Направление для сортировки
+  OrderDirection order_direction = 5;
+}
+
+// Сущность ответа на получение списка пользователей
+message ListResponse {
+  // Список пользователей
+  repeated User items = 1;
+  // Количество пользователей (по заданному фильтру)
+  uint64 total = 2;
+}
+
+// Сущность запроса на создание пользователя
+message CreateRequest {
+  // Имя пользователя
+  optional string name = 1;
+  // Идентификатор группы пользователя
+  optional string group_id = 2;
+  // Тип пользователя
+  optional UserType type = 3;
+}
+
+// Сущность ответа на создание пользователя
+message CreateResponse {
+  // Созданный пользователь
+  User user = 1;
+}
+
+// Сущность пользователя
+message User {
+  // Идентификатор пользователя
+  string id = 1;
+  // Наименование пользователя
+  optional string name = 2;
+  // Идентификатор группы
+  optional string group_id = 3;
+  // Группа
+  groups.Group group = 4;
+  // Тип пользователя
+  UserType type = 5;
+  // Дата создания пользователя
+  google.protobuf.Timestamp created_at = 6;
+  // Дата обновления пользователя
+  optional google.protobuf.Timestamp updated_at = 7;
+  // Дата удаления пользователя
+  optional google.protobuf.Timestamp deleted_at = 8;
+}
+
+// Тип пользователя
+enum UserType {
+  // Неизвестный
+  USER_TYPE_UNKNOWN = 0;
+  // Администратор
+  ADMIN = 1;
+  // Обычный пользователь
+  USER = 2;
+}

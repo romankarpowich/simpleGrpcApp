@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package groups;
+
+option go_package = "github.com/romankarpowich/simpleGrpcApp/users/pkg/api/groups;groups";
+
+import "google/protobuf/timestamp.proto";
+
+service Groups {
+  // Запрос на получение списка групп
+  rpc List(ListRequest) returns (ListResponse) {};
+}
+
+
+// Сущность запроса на получение списка групп
+message ListRequest {
+  // Сущность фильтра к запросу
+  message Filter {
+    // Список идентификаторов групп
+    repeated string id_in = 1;
+    // Сходство по имени
+    optional string name_like = 2;
+  }
+  // Поле для сортировки
+  enum OrderField {
+    // Создание пользователя
+    CREATED_AT = 0;
+    // Обновление пользователя
+    UPDATED_AT = 1;
+  }
+  // Направление сортировки
+  enum OrderDirection {
+    // По возрастанию
+    ASC = 0;
+    // По убыванию
+    DESC = 1;
+  }
+  // Фильтр запроса
+  Filter filter = 1;
+  // Лимит записей
+  uint64 limit = 2;
+  // Сдвиг записей
+  uint64 offset = 3;
+  // Поле для сортировки
+  OrderField order_filed = 4;
+  // Направление для сортировки
+  OrderDirection order_direction = 5;
+}
+
+// Сущность ответа на получение списка групп
+message ListResponse {
+  // Список групп
+  repeated Group items = 1;
+  // Количество групп (по заданному фильтру)
+  uint64 total = 2;
+}
+
+// Сущность пользователя
+message Group {
+  // Идентификатор группы
+  string id = 1;
+  // Наименование группы
+  optional string name = 2;
+  // Дата создания группы
+  google.protobuf.Timestamp created_at = 3;
+  // Дата обновления группы
+  optional google.protobuf.Timestamp updated_at = 4;
+  // Дата удаления группы
+  optional google.protobuf.Timestamp deleted_at = 5;
+}
